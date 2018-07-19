@@ -1,0 +1,4 @@
+InvalidReporterError
+EmptyReportError
+UnknownMessageError
+InvalidMessageError

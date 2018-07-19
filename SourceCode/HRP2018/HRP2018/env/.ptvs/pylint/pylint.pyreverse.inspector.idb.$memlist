@@ -1,0 +1,17 @@
+astroid
+IdGeneratorMixIn
+exceptions
+_iface_hdlr
+interfaces
+project_from_files
+modutils
+collections
+node_classes
+Project
+_astroid_wrapper
+bases
+utils
+traceback
+os
+manager
+Linker

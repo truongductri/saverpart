@@ -1,0 +1,6 @@
+_url
+SQLiteDialect_pysqlcipher
+SQLiteDialect_pysqlite
+pool
+dialect
+dbapi2

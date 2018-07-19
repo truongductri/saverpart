@@ -1,0 +1,10 @@
+SortImports
+isort
+__version__
+hooks
+pylama_isort
+natural
+pie_slice
+main
+__main__
+settings

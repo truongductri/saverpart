@@ -1,0 +1,10 @@
+﻿[
+  {
+    "outputFile": "apps/app_main/static/css/site.css",
+    "inputFile": "apps/app_main/static/css/site.less"
+  },
+  {
+    "outputFile": "apps/performance/static/css/site.css",
+    "inputFile": "apps/performance/static/css/site.less"
+  }
+]

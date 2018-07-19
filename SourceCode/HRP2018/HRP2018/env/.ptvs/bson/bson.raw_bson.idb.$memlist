@@ -1,0 +1,9 @@
+DEFAULT_RAW_BSON_OPTIONS
+DEFAULT
+abc
+iteritems
+_iterate_elements
+InvalidBSON
+RawBSONDocument
+_RAW_BSON_DOCUMENT_MARKER
+_UNPACK_INT

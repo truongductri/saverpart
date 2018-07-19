@@ -1,0 +1,16 @@
+Column
+fixtures
+literal_column
+provide_metadata
+select
+exc
+config
+eq_
+ExceptionTest
+Integer
+String
+assert_raises
+AutocommitTest
+EscapingTest
+requirements
+Table

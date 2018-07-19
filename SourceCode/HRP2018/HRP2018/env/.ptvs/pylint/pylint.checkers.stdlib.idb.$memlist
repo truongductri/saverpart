@@ -1,0 +1,16 @@
+OPEN_FILES
+COPY_COPY
+_check_mode_str
+IAstroidChecker
+six
+register
+astroid
+StdlibChecker
+utils
+UNITTEST_CASE
+BaseChecker
+OPEN_MODULE
+OS_ENVIRON
+THREADING_THREAD
+Instance
+sys

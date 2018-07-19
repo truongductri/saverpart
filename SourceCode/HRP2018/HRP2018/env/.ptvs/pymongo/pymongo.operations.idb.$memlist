@@ -1,0 +1,15 @@
+validate_boolean
+_index_list
+IndexModel
+ReplaceOne
+validate_collation_or_none
+validate_list
+DeleteOne
+_UpdateOp
+DeleteMany
+_gen_index_name
+_index_document
+validate_is_mapping
+InsertOne
+UpdateMany
+UpdateOne
