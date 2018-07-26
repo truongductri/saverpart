@@ -1,16 +1,18 @@
 """
 This package is the core package support for multi purpose in project
 """
-import view
-import applications
-import authorize
-import language
+from . import dict_utils
+from . dic_has_key import dic_has_key
+from . import view
+from . import applications
+from . import authorize
+from . import language
 import sys
-import caller
-import sql_db
+from . import caller
+from . import sql_db
 import os
-import layout_view #use for boostrap layout definition
-import url
+from . import layout_view #use for boostrap layout definition
+from . import url
 import datetime
 import threading
 system_settings=None
@@ -23,7 +25,7 @@ def get_tenancy_code_regex():
     get Regex for tenancyCode tenancy code must be star with alphabet and including number, "-","_":
     :return:
     """
-    return "[A-Za-z0-9](?:[A-Za-z0-9\-\_]{0,61}[A-Za-z0-9])"
+    return r"[A-Za-z0-9](?:[A-Za-z0-9\-\_]{0,61}[A-Za-z0-9])"
     # return "\(w{0,24})"
 def validate_tenancy_code(code):
     """
@@ -59,7 +61,7 @@ def get_django_settings_module():
     if setting_name==None:
         return None
     else:
-        if not sys.modules.has_key(setting_name):
+        if not dic_has_key(sys.modules,setting_name):
             return None
         else:
             system_settings=sys.modules[setting_name]
@@ -140,13 +142,13 @@ def get_tenancy_schema(code):
     """
     from . import get_django_settings_module
     import re
-    cmp=re.compile("[a-zA-Z_0-9-]+\z",re.IGNORECASE)
+    # cmp=re.compile(r"[a-zA-Z_0-9-]+\z",re.IGNORECASE)
     if get_django_settings_module().MULTI_TENANCY_DEFAULT_SCHEMA==code:
         return code
 
     global _cache_multi_tenancy
 
-    if not _cache_multi_tenancy.has_key(code):
+    if not dict_utils.has_key(_cache_multi_tenancy,code):
         lock.acquire()
         try:
             item=get_tenancy_collection().find_one(

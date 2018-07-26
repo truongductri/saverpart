@@ -1,3 +1,6 @@
+﻿var $$schema = 'lv';
+var $$separate = '.';
+
 db.system.js.deleteOne({ "_id": "getListPermission" });
 db.system.js.save(
     {
@@ -230,4 +233,59 @@ db.system.js.save(
             };
         }
     }
+);
+
+//Create collection TMSYS_ConfigChangeObjectPriority và init data
+db.createCollection($$schema + $$separate + 'TMSYS_ConfigChangeObjectPriority');
+db.getCollection($$schema + $$separate + 'TMSYS_ConfigChangeObjectPriority').insert(
+    [
+        {
+            "value_list_key": "TMChangeObjectRank",
+            "change_object": 1,
+            "name": "Nhóm Chức danh công việc",
+            "priority_no": 1,
+            "note": "Đối tượng thiết lập Xếp loại cá nhân",
+            "language": "vn",
+            "created_on": new Date,
+            "created_by": "application",
+            "modified_on": null,
+            "modified_by": null
+        },
+        {
+            "value_list_key": "TMChangeObjectRank",
+            "change_object": 2,
+            "name": "Chức danh công việc",
+            "priority_no": 2,
+            "note": "Đối tượng thiết lập Xếp loại cá nhân",
+            "language": "vn",
+            "created_on": new Date,
+            "created_by": "application",
+            "modified_on": null,
+            "modified_by": null
+        },
+        {
+            "value_list_key": "TMChangeObjectRank",
+            "change_object": 3,
+            "name": "Chức vụ",
+            "priority_no": 3,
+            "note": "Đối tượng thiết lập Xếp loại cá nhân",
+            "language": "vn",
+            "created_on": new Date,
+            "created_by": "application",
+            "modified_on": null,
+            "modified_by": null
+        },
+        {
+            "value_list_key": "TMChangeObjectRank",
+            "change_object": 4,
+            "name": "Loại nhân viên",
+            "priority_no": 4,
+            "note": "Đối tượng thiết lập Xếp loại cá nhân",
+            "language": "vn",
+            "created_on": new Date,
+            "created_by": "application",
+            "modified_on": null,
+            "modified_by": null
+        }
+    ]
 );

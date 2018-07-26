@@ -1,0 +1,46 @@
+﻿<div class="col-md-12">
+    <collapse-box class="zb-form-common" title="${get_res('Factor_Appraisal_Group_list','Danh sách nhóm yếu tố đánh giá')}">
+        <toolbar>
+            <input-text-icon icon="bowtie-icon bowtie-search"
+                on-click="onSearch"></input-text-icon>
+            <button class="zb-btn zb-btn-o-green" ng-click="onAdd()">
+                <i class="bowtie-icon bowtie-math-plus"></i>
+            </button>
+            <button class="zb-btn zb-btn-o-blue" ng-click="onEdit()">
+                <i class="bowtie-icon bowtie-edit-outline"></i>
+            </button>
+            <button class="zb-btn zb-btn-o-red" ng-click="onDelete()">
+                <i class="bowtie-icon bowtie-edit-remove"></i>
+            </button>
+            <button class="zb-btn" ng-click="onImport()">
+                <i class="bowtie-icon bowtie-transfer-upload"></i>
+            </button>
+            <button class="zb-btn" ng-click="onExport()">
+                <i class="bowtie-icon bowtie-transfer-download"></i>
+            </button>
+            <button class="zb-btn" ng-click="onAttach()">
+                <i class="bowtie-icon bowtie-print"></i>
+            </button>
+            <button class="zb-btn" ng-click="onRefresh()">
+                <i class="bowtie-icon bowtie-navigate-refresh"></i>
+            </button>
+        </toolbar>
+        <div class="col-md-12 no-padding" style="height: 220px;">
+            <tree-table data-source="$$tableTree.dataTableTree" data-fields="$$tableTree.tableFields"
+                    display-field="gjw_name"
+                    display-name="Tên nhóm"
+                    parent-field="parent_code" key-field="gjw_code" 
+                    multi-select="$$tableTree.treeMultiSelect" select-mode="$$tableTree.treeSelectMode"
+                    on-select="$$tableTree.selectTreeNode"
+                    current-node="$$tableTree.treeCurrentNode"
+                    selected-nodes="$$tableTree.treeSelectedNodes"
+                    selected-root-nodes="$$tableTree.treeSelectedRootNodes"
+                    search-text="$$tableTree.treeSearchText"
+                    checked-field="is_selected"
+                    disabled="$$tableTree.treeDisabled"/>
+        </div>
+    </collapse-box>
+</div>
+<script>
+    <%include file="scripts/jobworkinggroup.js"/>
+</script>

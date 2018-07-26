@@ -13,7 +13,7 @@ def set_config(*args,**kwargs):
     global __connection_string__
     if args==():
         args=kwargs
-    print kwargs
+    print(kwargs)
     if type(args) is tuple:
         args=args[0]
     db_engine=args["engine"]

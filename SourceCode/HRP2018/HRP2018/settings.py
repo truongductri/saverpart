@@ -16,6 +16,12 @@ import sys
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(BASE_DIR+"/packages")
+# Use mongodb driver with transaction
+sys.path.append(os.getcwd()+"/packages/mongo")
+sys.path.append(os.getcwd()+"/packages/mongo/pymongo")
+
+sys.path.append(BASE_DIR+"/packages/mongo")
+sys.path.append(BASE_DIR+"/packages/mongo/pymongo")
 sys.path.append(BASE_DIR+"/packages/django")
 
 sys.path.append(os.getcwd()+"/packages")
@@ -23,7 +29,7 @@ sys.path.append(os.getcwd()+"/packages/django")
 from django.conf.urls import url, include
 
 import quicky
-import encryptor
+from quicky import encryptor
 
 
 # Quick-start development settings - unsuitable for production
@@ -118,7 +124,7 @@ MULTI_TENANCY_CONFIGURATION=dict(
     user="sys",
     password="123456",
     port=27017,
-    collection="sys.multi_tenancy"
+    collection="sys.customers"
 )
 from quicky import backends
 backends.set_config(
@@ -153,7 +159,7 @@ STATIC_URL = '/static/'
 #HOST_DIR="Performance"
 APPS=[
 
-     dict(host="default",
+     dict(host="",
            name="performance",
            path="apps/performance"),
       # dict(host="admin",
@@ -166,14 +172,16 @@ APPS=[
            ),
       dict(host="lms",
            name="lms",
-           path="apps/lms")]
+           path="apps/lms",
+           static_dir="apps/performance/static")]
 aut_config_local=dict(
     provider="authorization.auth",
     name="lv01_lms",
     host="172.16.7.63",
     port=27017,
     user="sys",
-    password="123456"
+    password="123456",
+    schema="sys"
 )
 quicky.authorize.set_config(aut_config_local)
 

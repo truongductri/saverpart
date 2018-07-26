@@ -23,7 +23,7 @@
                         reloadData();
                     } else if (scope.__mode == 2) {
                         scope.$parent.$parent.$parent.currentItem.full_name = res.entity.last_name + " " + res.entity.first_name;
-                        scope.$parent.$parent.$parent.currentItem.gender = res.entity.gender;
+                        scope.$parent.$parent.$parent.currentItem.gender = _.findWhere(scope.$parent.$parent.$parent.cbbGender, { "value": res.entity.gender })['caption'];
                         scope.$parent.$parent.$parent.currentItem.department_name = res.entity.department_name;
                         scope.$parent.$parent.$parent.currentItem.job_w_code = res.entity.job_w_code;
                         scope.$parent.$parent.$parent.currentItem.join_date = res.entity.join_date;

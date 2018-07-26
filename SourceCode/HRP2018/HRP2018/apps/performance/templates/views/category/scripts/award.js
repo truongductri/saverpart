@@ -93,7 +93,7 @@
     }
 
     function onSearch(val) {
-        scope.tableSearchText = $('#tableAwardSearchText').val();
+        scope.tableSearchText = val;
         scope.$applyAsync();
     }
 
@@ -171,16 +171,6 @@
             })
     }
     _comboboxData();
-
-    $(document).ready(function () {
-        $('#tableAwardSearchText').on('keypress', function (e) {
-            var code = e.keyCode || e.which;
-            if (code == 13) {
-                scope.tableSearchText = $('#tableAwardSearchText').val();
-                scope.$applyAsync();
-            }
-        });
-    })
 
     //("===============INIT==================")
     //_tableData();

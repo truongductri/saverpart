@@ -42,7 +42,6 @@ def update(args):
         ret = {}
         if args['data'] != None:
             data = dict(
-                _id = ObjectId(args['data']['_id']),
                 role_name = args['data']['role_name'],
                 dd_code = args['data']['dd_code'],
                 stop = (lambda data: data["stop"] if data.has_key("stop") else False)(args['data']),
@@ -55,8 +54,8 @@ def update(args):
 
             ret = models.AD_Roles().update(
                     data,
-                    "_id == {0}",
-                    data['_id'])
+                    "role_code == {0}",
+                    args['data']['role_code'])
 
             #ret_user = {}
             #if args['data'].has_key('users'):
@@ -124,7 +123,7 @@ def get_list_with_searchtext(args):
                 if(searchText != None):
                     items.match("contains(role_name, @name) or contains(role_code, @name) " + \
                         "or contains(dd_code, @name) or contains(description, @name) " + \
-                       "or contains(created_on, @name)",name=searchText)
+                       "or contains(created_on, @name)",name=searchText.strip())
 
                 if(sort != None):
                     items.sort(sort)

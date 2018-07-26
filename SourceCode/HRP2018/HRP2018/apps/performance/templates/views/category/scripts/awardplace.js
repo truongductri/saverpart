@@ -90,7 +90,7 @@
     }
 
     function onSearch(val) {
-        scope.tableSearchText = $('#tableAwardPlaceSearchText').val();
+        scope.tableSearchText = val;
         scope.$applyAsync();
     }
 
@@ -151,16 +151,6 @@
                     scope.$apply();
                 })
     }
-
-    $(document).ready(function () {
-        $('#tableAwardPlaceSearchText').on('keypress', function (e) {
-            var code = e.keyCode || e.which;
-            if (code == 13) {
-                scope.tableSearchText = $('#tableAwardPlaceSearchText').val();
-                scope.$applyAsync();
-            }
-        });
-    })
 
     //("===============INIT==================")
     //_tableData();

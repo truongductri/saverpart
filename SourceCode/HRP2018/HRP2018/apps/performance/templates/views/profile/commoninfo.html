@@ -5,49 +5,49 @@
              <div class="col-md-4">
                  <div class="form-group zb-form-group">
                      <!--Mã nhân viên-->
-                     <label class="col-sm-4 zb-form-label">Mã nhân viên</label>
+                     <label class="col-sm-4 zb-form-label">${get_res('employee_code','Mã nhân viên')}</label>
                      <div class="col-sm-8">
                          <input-text required ng-model="entity.employee_code" ng-disabled="__mode === 2 ? true : false">
                      </div>
                  </div>
                  <div class="form-group zb-form-group">
                      <!--Họ-->
-                     <label for="inputLastName" class="col-sm-4 zb-form-label">Họ</label>
+                     <label for="inputLastName" class="col-sm-4 zb-form-label">${get_res('last_name','Họ')}</label>
                      <div class="col-sm-8">
                          <input-text ng-model="entity.last_name" required>
                      </div>
                  </div>
                  <div class="form-group zb-form-group">
                      <!--Tên-->
-                     <label class="col-sm-4 zb-form-label">Tên</label>
+                     <label class="col-sm-4 zb-form-label">${get_res('first_name','Tên')}</label>
                      <div class="col-sm-8">
                          <input-text ng-model="entity.first_name" required>
                      </div>
                  </div>
                  <div class="form-group zb-form-group">
                      <!--Bí danh-->
-                     <label class="col-sm-4 zb-form-label">Bí danh</label>
+                     <label class="col-sm-4 zb-form-label">${get_res('extra_name','Bí danh')}</label>
                      <div class="col-sm-8">
                          <input-text ng-model="entity.extra_name">
                      </div>
                  </div>
                  <div class="form-group zb-form-group">
                      <!--Giới tính-->
-                     <label for="inputGender" class="col-sm-4 zb-form-label">Giới tính</label>
+                     <label for="inputGender" class="col-sm-4 zb-form-label">${get_res('gender','Giới tính')}</label>
                      <div class="col-sm-8">
                          <input-select ng-model="entity.gender" data-list="$parent.$parent.$parent.cbbGender" data-value="value" data-caption="caption" />
                      </div>
                  </div>
                  <!--Ngày sinh-->
                  <div class="form-group zb-form-group">
-                     <label class="col-sm-4 zb-form-label">Ngày sinh</label>
+                     <label class="col-sm-4 zb-form-label">${get_res('birthday','Ngày sinh')}</label>
                      <div class="col-sm-8">
                          <date-picker ng-model="entity.birthday" data-format="{{$root.systemConfig.date_format}}" />
                      </div>
                  </div>
                  <div class="form-group zb-form-group">
                      <!--Nơi sinh-->
-                     <label class="col-sm-4 zb-form-label">Nơi sinh</label>
+                     <label class="col-sm-4 zb-form-label">${get_res('b_province_code','Nơi sinh')}</label>
                      <div class="col-sm-8">
                          <!--<input-select data-list="" ng-model="entity.b_province_code"/>-->
                          <input-combobox id="inputEmployeeId" required
@@ -60,7 +60,7 @@
              <div class="col-md-4">
                  <div class="form-group zb-form-group">
                      <!--Quốc gia-->
-                     <label class="col-sm-4 zb-form-label">Quốc gia</label>
+                     <label class="col-sm-4 zb-form-label">${get_res('nation_code','Quốc gia')}</label>
                      <div class="col-sm-8">
                          <!--<input-select data-list="" ng-model="entity.nation_code" data-value="value" data-caption="caption" />-->
                          <input-combobox id="inputEmployeeId"
@@ -71,7 +71,7 @@
                  </div>
                  <div class="form-group zb-form-group">
                      <!--Dân tộc-->
-                     <label class="col-sm-4 zb-form-label">Dân tộc</label>
+                     <label class="col-sm-4 zb-form-label">${get_res('ethnic_code','Dân tộc')}</label>
                      <div class="col-sm-8">
                          <!--<input-select data-list="" ng-model="entity.ethnic_code" data-value="value" data-caption="caption" />-->
                          <input-combobox id="inputEmployeeId"
@@ -82,7 +82,7 @@
                  </div>
                  <div class="form-group zb-form-group">
                      <!--Tôn giáo-->
-                     <label class="col-sm-4 zb-form-label">Tôn giáo</label>
+                     <label class="col-sm-4 zb-form-label">${get_res('religion_code','Tôn giáo')}</label>
                      <div class="col-sm-8">
                          <!--<input-select data-list="" ng-model="entity.religion_code" data-value="value" data-caption="caption" />-->
                          <input-combobox id="inputEmployeeId"
@@ -93,14 +93,14 @@
                  </div>
                  <!--Trình độ văn hóa-->
                  <div class="form-group zb-form-group">
-                     <label class="col-sm-4 zb-form-label">Trình độ văn hóa</label>
+                     <label class="col-sm-4 zb-form-label">${get_res('culture_id','Trình độ văn hóa')}</label>
                      <div class="col-sm-8">
-                         <input-select data-list="" ng-model="entity.culture_id" data-value="value" data-caption="caption" />
+                         <input-select data-list="$parent.$parent.$parent.cbbCulture" ng-model="entity.culture_id" data-value="value" data-caption="caption" />
                      </div>
                  </div>
                  <!--Hình thức đào tạo-->
                  <div class="form-group zb-form-group">
-                     <label class="col-sm-4 zb-form-label">Hình thức đào tạo</label>
+                     <label class="col-sm-4 zb-form-label">${get_res('is_retrain','Hình thức đào tạo')}</label>
                      <div class="col-sm-8">
                          <input-select data-list="$parent.$parent.$parent.cbbRetrain" ng-model="entity.is_retrain" data-value="value" data-caption="caption" />
                      </div>
@@ -213,7 +213,7 @@
                  </div>
                  <!--Ngày vào nghành-->
                  <div class="form-group zb-form-group">
-                     <label class="col-sm-4 zb-form-label">Ngày vào nghành</label>
+                     <label class="col-sm-4 zb-form-label">Ngày vào ngành</label>
                      <div class="col-sm-8">
                          <date-picker ng-model="entity.career_date" data-format="{{$root.systemConfig.date_format}}" />
                      </div>

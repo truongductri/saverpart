@@ -5,6 +5,10 @@
     scope.filterFunctionModel = ''
     scope.currentFunction = '';
     scope.mapName = [];
+    scope.objSearch = {
+        $$$modelSearch: null,
+        onSearch: onSearch
+    }
     /* Table */
     //Cấu hình tên field và caption hiển thị trên UI
     scope.tableFields = [
@@ -248,15 +252,9 @@
             })
     }
 
-    function eventPressEnter() {
-        $('tableSearchText').ready(function () {
-            $('#tableSearchText').bind('keyup', function (e) {
-                if (e.keyCode === 13) { // 13 is enter key
-                    scope.tableSearchText = e.currentTarget.value;
-                    scope.$applyAsync();
-                }
-            });
-        })
+    function onSearch(val) {
+        scope.tableSearchText = val;
+        scope.$applyAsync();
     }
 
     function _selectBoxData() {
@@ -285,7 +283,7 @@
                 scope.cbbWorkingType = getValue(res.values, "LWorkingType");
                 scope.$applyAsync();
                 function getValue(response, listName) {
-                    return _.findWhere(response, { "list_name": listName }).values;
+                    return _.findWhere(response, { "list_name": listName }) ? _.findWhere(response, { "list_name": listName }).values : [];
                 }
             })
     }
@@ -297,7 +295,6 @@
         scope.mapName = scope.handleData.mapName;
         scope.currentFunction = scope.mapName[0];
         scope.selectedFunction = (scope.mapName.length > 0) ? scope.mapName[0].function_id : null;
-        eventPressEnter();
         scope.$applyAsync();
     })();
 

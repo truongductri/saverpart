@@ -1,0 +1,34 @@
+﻿<div class="hcs-container" style="height: 100%">
+    <div class="zb-page-sidebar">
+        <div class="zb-right" style="width:100%;">
+            <div class="zb-top">
+            <div class="zb-left-content">
+                    <site-map class="ng-scope">
+                        <a style="padding-left:25px;"><span class="ng-binding">{{currentFunction.custom_name}}</span></a>
+                    </site-map>
+            </div>
+        </div>
+            <div class="zb-content">
+                <div class="col-md-12" style="background-color:#ffffff; padding-top:15px;">
+                    <nav-tabs min-height="78.5vh" max-height="78.5vh" style="overflow:unset;">
+                        <tab-content name="tab1" style="height: 48vh;" title="${get_res('Factor_Appraisal_Group','Nhóm yếu tố đánh giá')}">
+                            <div c-template url="${get_app_url('')}/pages/factorappraisal/factorappraisalgroup"
+                                 style="height: 100%;">
+
+                            </div>
+                        </tab-content>
+                        <tab-content name="tab2" style="height: 76vh;" title="${get_res('Factor_Appraisal','Yếu tố đánh giá')}" select="triggerResize">
+                            <div c-template url="${get_app_url('')}/pages/factorappraisal/factorappraisal" 
+                                 style="height: 100%;">
+
+                            </div>
+                        </tab-content>
+                    </nav-tabs>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    <%include file="../scripts/factorappraisal.js"/>
+</script>

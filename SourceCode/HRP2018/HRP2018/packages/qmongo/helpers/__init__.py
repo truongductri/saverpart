@@ -1,11 +1,12 @@
 from . import *
 from . import expr
 from . import validators
-from filter_expression import filter_expression
-from  aggregate_expression import aggregate_expression
-import aggregate_validators as query_validator
-import validators
-from model_events import model_event
+from . filter_expression import filter_expression
+from . aggregate_expression import aggregate_expression
+from . import  aggregate_validators as query_validator
+from . import validators
+from .. import dict_utils
+from . model_events import model_event
 _model_caching_={}
 _model_index_={}
 _model_caching_params={}
@@ -130,7 +131,7 @@ def define_model(_name,keys=None,*args,**kwargs):
     global _model_index_
     global _model_caching_params
     name=_name
-    if _model_caching_.has_key(name):
+    if dict_utils.has_key(_model_caching_,name):
         return _model_caching_[name]
     params=kwargs
     if type(args) is tuple and args.__len__()>0:
@@ -140,7 +141,7 @@ def define_model(_name,keys=None,*args,**kwargs):
     })
     list_of_fields=unwind_data(params)
     validators.set_require_fields(name,[
-        x for x in list_of_fields.keys() if list_of_fields[x]["require"]
+        x for x in list(list_of_fields.keys()) if list_of_fields[x]["require"]
     ])
     validate_dict={}
     for x in list_of_fields.keys():
@@ -182,7 +183,7 @@ def extent_model(name,from_name,keys=None,*args,**kwargs):
     if keys==None:
         keys=[]
     keys.extend(_model_index_[from_name]["keys"])
-    if _model_caching_params.has_key(from_name):
+    if dict_utils.has_key(_model_caching_params,from_name):
         kwargs.update(_model_caching_params[from_name])
     define_model(name,keys,*args,**kwargs)
     from_event=events(from_name)
@@ -217,7 +218,7 @@ def get_model(name):
     :param name:
     :return:
     """
-    if not _model_caching_.has_key(name):
+    if not dict_utils.has_key(_model_caching_,name):
         raise (Exception("It look like you forgot create model for '{0}'\n"
                          "How to define a model?\n"
                          "from quicky import helpers\n"
@@ -248,13 +249,13 @@ def extract_data(data):
     for key in data.keys():
         if key.find(".")>-1:
             items=key.split('.')
-            if not ret.has_key(items[0]):
+            if not dict_utils.has_key(ret,items[0]):
                 ret.update({
                     items[0]:{}
                 })
             val=ret[items[0]]
             for x in items[1:items.__len__()-1]:
-                if not val.has_key(x):
+                if not dict_utils.has_key(val,x):
                     val.update({
                         x:{}
                     })
@@ -275,7 +276,7 @@ def events(name):
     :param name: Model name
     :return: list of function has been declare in model
     """
-    if _model_events.has_key(name):
+    if dict_utils.has_key(_model_events,name):
         return _model_events[name]
     else:
         _model_events.update({

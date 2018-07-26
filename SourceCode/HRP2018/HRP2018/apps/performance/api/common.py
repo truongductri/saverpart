@@ -3,8 +3,8 @@ from bson import ObjectId
 import models
 import datetime
 import logging
-import encryptor
 import quicky
+from quicky import encryptor
 from qmongo import helpers
 import qmongo
 import uuid
@@ -171,7 +171,7 @@ def get_dropdown_list(args):
                         filter_query = ""
                         filter_dict = dict()
                         for i in range(len(filter)):
-                            if i == len(filter):
+                            if i == (len(filter) - 1):
                                 filter_query += "contains(" + filter[i] + ", " + "@" + filter[i] + ")"
                             else:
                                 filter_query += "contains(" + filter[i] + ", " + "@" + filter[i] + ") or "

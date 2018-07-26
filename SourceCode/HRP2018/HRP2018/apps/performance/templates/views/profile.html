@@ -63,16 +63,16 @@
         <div class="hcs-left-side-department-content">
             <div class="hcs-left-side-department-tree-tool-bar">
                 <div class="pull-left" style="padding-left:10px;">
-                    <input-text ng-model="treeSearchText" style="width:255px;"></input-text>
+                    <input-text-icon ng-model="treeSearchText" style="width:255px;"></input-text-icon>
                 </div>
                 <div class="pull-left" style="padding-left:10px;">
-                    <button class="zb-btn">
-                        <i class="bowtie-icon bowtie-chevron-down-all"></i>
+                    <button class="zb-btn" ng-click="$treeCollapseAll()">
+                        <i class="bowtie-icon bowtie-chevron-up-all"></i>
                     </button>
                 </div>
                 <div class="pull-left" style="padding-left:5px;">
-                    <button class="zb-btn">
-                        <i class="bowtie-icon bowtie-chevron-up-all"></i>
+                    <button class="zb-btn"  ng-click="$treeExpandAll()">
+                        <i class="bowtie-icon bowtie-chevron-down-all"></i>
                     </button>
                 </div>
                 <div class="clearfix"></div>
@@ -91,7 +91,9 @@
                            search-text="treeSearchText"
                            check-all="treeCheckAll"
                            checked-field="is_selected"
-                           disabled="true"/>
+                           disabled="true"
+                           expand-all="$treeExpandAll"
+                           collapse-all="$treeCollapseAll"/>
             </div>
         </div>
         <div class="hcs-right-side-department-content">
@@ -99,14 +101,14 @@
                 <div class="zb-left-content pull-left" style="width:600px;">
                     <div class="row">
                         <div class="col-md-6">
-                            <input-select data-list="cbbEmployeeActive"
+                            <input-select data-list="cbbEmployeeActive" class="size-lg"
                                           data-value="value" 
                                           data-caption="caption"
                                           value="3">
                             </input-select>
                         </div>
                         <div class="col-md-6">
-                            <input-text id="tableSearchText"></input-text>
+                            <input-text-icon id="tableSearchText" on-click="objSearch.onSearch" ng-model="objSearch.$$$modelSearch"></input-text-icon>
                         </div>
                     </div>
                 </div>

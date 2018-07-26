@@ -90,8 +90,8 @@
         }
     }
 
-    function onSearch() {
-        scope.tableSearchText = $('#tableAwardLevelSearchText').val();
+    function onSearch(val) {
+        scope.tableSearchText = val;
         scope.$applyAsync();
     }
 
@@ -153,16 +153,6 @@
                     scope.$apply();
                 })
     }
-
-    $(document).ready(function () {
-        $('#tableAwardLevelSearchText').on('keypress', function (e) {
-            var code = e.keyCode || e.which;
-            if (code == 13) {
-                scope.tableSearchText = $('#tableAwardLevelSearchText').val();
-                scope.$applyAsync();
-            }
-        });
-    })
 
     //("===============INIT==================")
     //_tableData();

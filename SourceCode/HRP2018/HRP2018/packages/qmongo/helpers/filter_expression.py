@@ -1,9 +1,6 @@
 from . import *
-import expr
+from . import expr
 def get_param_kw(*args,**kwargs):
-    print args
-    print kwargs
-    
     if type(args) is tuple and args.__len__()>0 and type(args[0]) is dict:
         return args[0]
     if type(args) is tuple and args.__len__()>0 and not type(args[0]) is dict:

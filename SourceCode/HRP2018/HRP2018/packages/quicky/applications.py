@@ -2,6 +2,7 @@ from . import app_info
 import os
 import sys
 import logging
+from . import dict_utils
 logger=logging.getLogger(__name__)
 _cache_apps={}
 __cache_find_path={}
@@ -24,7 +25,7 @@ def load_app(*args,**kwargs):
     """
     global _cache_apps
     try:
-        if not _cache_apps.has_key(args[0]["path"]):
+        if not dict_utils.has_key(_cache_apps,args[0]["path"]):
             _cache_apps.update({
                 args[0]["path"]:app_info.app_config(args)
             })
@@ -61,15 +62,23 @@ def get_app_by_file(file_name):
     :return:
     """
     global __cache_find_path
-    if __cache_find_path.has_key(file_name):
-        return __cache_find_path[file_name]
+    if sys.version_info[0] <= 2:
+        if __cache_find_path.has_key(file_name):
+            return __cache_find_path[file_name]
+    else:
+        if __cache_find_path.__contains__(file_name):
+            return __cache_find_path[file_name]
 
 
     _path=os.path.dirname(file_name)
     _dir=_path.replace("\\","/").replace("//","/")
     matched_app=None
-    if _cache_apps.has_key(_dir):
-        matched_app=_cache_apps[_dir]
+    if sys.version_info[0] <= 2:
+        if _cache_apps.has_key(_dir):
+            matched_app=_cache_apps[_dir]
+    else:
+        if _cache_apps.__contains__(_dir):
+            matched_app=_cache_apps[_dir]
     if matched_app==None:
         for key in _cache_apps.keys():
             if key in _dir:

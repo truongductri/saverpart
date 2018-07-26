@@ -1,5 +1,6 @@
 from django.contrib.auth import get_user_model
 from django.contrib.auth.backends import ModelBackend
+import sys
 """
 This package allow login without using password. 
 How to use this:
@@ -18,7 +19,7 @@ class HashModelBackend(ModelBackend):
         if username is None:
             username = kwargs.get(UserModel.USERNAME_FIELD)
         try:
-            user = UserModel._default_manager.get_by_natural_key(username)
+            user = UserModel._default_manager.get_by_natural_key(username,schema=kwargs["schema"])
             return user
         except UserModel.DoesNotExist:
             return None
@@ -34,21 +35,38 @@ def set_config(*args,**kwargs):
         args=args[0]
     else:
         args=kwargs
-    if not args.has_key("host"):
-        raise Exception("'host' was not found")
-    if not args.has_key("port"):
-        raise Exception("'port' was not found")
-    if not args.has_key("name"):
-        raise Exception("'name' was not found")
-    if not args.has_key("collection"):
-        raise Exception("'collection' was not found")
+    if sys.version_info[0] <=2:
+        if not args.has_key("host"):
+            raise Exception("'host' was not found")
+        if not args.has_key("port"):
+            raise Exception("'port' was not found")
+        if not args.has_key("name"):
+            raise Exception("'name' was not found")
+        if not args.has_key("collection"):
+            raise Exception("'collection' was not found")
+    else:
+        if not args.__contains__("host"):
+            raise Exception("'host' was not found")
+        if not args.__contains__("port"):
+            raise Exception("'port' was not found")
+        if not args.__contains__("name"):
+            raise Exception("'name' was not found")
+        if not args.__contains__("collection"):
+            raise Exception("'collection' was not found")
+
     if _coll==None:
         cnn=MongoClient(host=args["host"],port=args["port"])
         _db=cnn.get_database(args["name"])
-        if args.has_key("user") and (args["user"]!="" or args["user"]!=None):
-            _db.authenticate(args["user"],args["password"])
-        _coll=_db.get_collection(args["collection"])
-        _collection_name=args["collection"]
+        if sys.version_info[0] <= 2:
+            if args.has_key("user") and (args["user"]!="" or args["user"]!=None):
+                _db.authenticate(args["user"],args["password"])
+            _coll=_db.get_collection(args["collection"])
+            _collection_name=args["collection"]
+        else:
+            if args.__contains__("user") and (args["user"]!="" or args["user"]!=None):
+                _db.authenticate(args["user"],args["password"])
+            _coll=_db.get_collection(args["collection"])
+            _collection_name=args["collection"]
 def create_login_token(username,schema):
     if _coll == None:
         raise (Exception("It looks like you for get call 'quicky.backends.set_config\r\n"

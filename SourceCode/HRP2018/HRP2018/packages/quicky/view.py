@@ -6,7 +6,7 @@ import threading
 import logging
 import os
 import sys
-import tenancy
+from . import tenancy
 logger=logging.getLogger(__name__)
 global lock
 settings=None
@@ -26,7 +26,11 @@ def template(fn,*_path,**kwargs):
         _path=_path[00]
     if _path.__len__()==0:
         _path=kwargs
-    app=applications.get_app_by_file(fn.func_code.co_filename)
+    app = None
+    if sys.version_info[0] <= 2:
+        app=applications.get_app_by_file(fn.func_code.co_filename)
+    else:
+        app = applications.get_app_by_file(fn.__code__.co_filename)
 
     setattr(fn,"__application__",app)
     from . import get_django_settings_module
@@ -34,13 +38,16 @@ def template(fn,*_path,**kwargs):
     def exec_request(request, **kwargs):
         from . import applications as apps
 
-
-
-        _app= apps.get_app_by_file(fn.func_code.co_filename)
+        setattr(threading.current_thread(), "user", request.user)
+        setattr(threading.currentThread(), "user", request.user)
+        _app = None
+        if sys.version_info[0]<=2:
+            _app= apps.get_app_by_file(fn.func_code.co_filename)
+        else:
+            _app = apps.get_app_by_file(fn.__code__.co_filename)
         print(request.session.session_key)
         if _app != None:
             if hasattr(_app.settings, "DEFAULT_DB_SCHEMA"):
-                import tenancy
                 tenancy.set_schema(_app.settings.DEFAULT_DB_SCHEMA)
         global  settings
         if settings==None:
@@ -53,8 +60,8 @@ def template(fn,*_path,**kwargs):
 
         try:
             from django.shortcuts import redirect
-            import threading
-            import tenancy
+
+
 
             not_inclue_tenancy_code=False
             if hasattr(request,"not_inclue_tenancy_code"):
@@ -63,7 +70,6 @@ def template(fn,*_path,**kwargs):
             is_public = False
             authenticate = None
             request_path=request.path
-            import tenancy
             tenancy_code=tenancy.get_customer_code()
             if not not_inclue_tenancy_code and tenancy_code!=None:
                 request_path=request_path[tenancy_code.__len__()+1:request_path.__len__()]
@@ -78,13 +84,22 @@ def template(fn,*_path,**kwargs):
                 app=applications.get_app_by_name(app_name)
                 if app != None:
                     if hasattr(app.settings, "DEFAULT_DB_SCHEMA"):
-                        import tenancy
                         tenancy.set_schema(app.settings.DEFAULT_DB_SCHEMA)
+                    else:
+                        from . import get_tenancy_schema
+                        _tenancy_code=request_path.split('/')[1]
+                        _schema=get_tenancy_schema(request_path.split('/')[1])
+
+                        setattr(threading.currentThread(), "tenancy_code", _tenancy_code)
+                        setattr(threading.currentThread(), "request_tenancy_code", _schema)
+                        setattr(request, "tenancy_code", _schema)
+
+
                 else:
                     if sys.modules["settings"].MULTI_TENANCY_DEFAULT_SCHEMA == app_name:
                         app = applications.get_app_by_host_dir("")
                         if app != None:
-                            import threading
+
                             setattr(threading.currentThread(),"tenancy_code",app_name)
                             setattr(threading.currentThread(),"request_tenancy_code",app_name)
                             setattr(request,"tenancy_code",app_name)
@@ -92,12 +107,11 @@ def template(fn,*_path,**kwargs):
                         app = applications.get_app_by_host_dir(app_name)
                         if app != None:
                             tenancy_code=request_path.split('/')[1];
-                            import threading
+
                             setattr(threading.currentThread(),"tenancy_code",tenancy_code)
                             setattr(threading.currentThread(),"request_tenancy_code",tenancy_code)
                             setattr(request,"tenancy_code",tenancy_code)
                             if hasattr(app.settings, "DEFAULT_DB_SCHEMA"):
-                                import tenancy
                                 tenancy.set_schema(app.settings.DEFAULT_DB_SCHEMA)
                                 setattr(request, "tenancy_code", app.settings.DEFAULT_DB_SCHEMA)
 

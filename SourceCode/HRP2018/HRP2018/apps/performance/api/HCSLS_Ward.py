@@ -24,7 +24,10 @@ def get_list_with_searchtext(args):
         ret.match("district_code == @dis_code", dis_code = where['district_code'])
 
     if(searchText != None):
-        ret.match("contains(ward_name, @name)",name=searchText)
+        ret.match("contains(ward_name, @name) or " + \
+            "contains(ward_code, @name) or " + \
+            "contains(org_ward_code, @name) or " + \
+            "contains(ordinal, @name)",name=searchText.strip())
 
     if(sort != None):
         ret.sort(sort)
@@ -57,11 +60,11 @@ def update(args):
             data =  set_dict_update_data(args)
             ret  =  models.HCSLS_Ward().update(
                 data, 
-                "_id == {0}", 
-                ObjectId(args['data']['_id']))
+                "ward_code == {0}", 
+                args['data']['ward_code'])
             if ret['data'].raw_result['updatedExisting'] == True:
                 ret.update(
-                    item = AdministrativeSubdivisions.get_ward().match("_id == {0}", ObjectId(args['data']['_id'])).get_item()
+                    item = AdministrativeSubdivisions.get_ward().match("ward_code == {0}", args['data']['ward_code']).get_item()
                     )
             lock.release()
             return ret
@@ -79,7 +82,7 @@ def delete(args):
         lock.acquire()
         ret = {}
         if args['data'] != None:
-            ret  =  models.HCSLS_Ward().delete("_id in {0}",[ObjectId(x["_id"])for x in args['data']])
+            ret  =  models.HCSLS_Ward().delete("ward_code in {0}",[x["ward_code"]for x in args['data']])
             lock.release()
             return ret
 

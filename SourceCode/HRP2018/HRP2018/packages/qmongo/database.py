@@ -1,7 +1,7 @@
 from sqlalchemy.sql.functions import count
 from  datetime import datetime
-from helpers import expr,validators
-from helpers import get_model,get_keys_of_model
+from . helpers import expr,validators
+from . helpers import get_model,get_keys_of_model
 from pymongo import MongoClient
 from pymongo.errors import OperationFailure
 import threading
@@ -9,9 +9,11 @@ import logging
 import copy
 import pymongo
 import pytz
+import sys
 from bson.codec_options import CodecOptions
-import helpers
-
+from . import helpers
+from . import dict_utils
+from pymongo.client_session import ClientSession
 _cache_create_key_for_collection=None
 def get_current_schema():
     # type: () -> str
@@ -246,12 +248,14 @@ class ENTITY():
                 code="duplicate"
             )
         )
-    def commit(self):
+    def commit(self,session = None):
         """
         Commit actio. Example; insert_many then commit, update or delete require filter before
         :return:
         """
         _id=None
+        if session != None and not isinstance(session,ClientSession):
+            raise (Exception("Session must be 'pymongo.client_session.ClientSession'"))
         if self._data.has_key("$set"):
             _id=self._data["$set"].get("_id",None)
             for key in self._data["$set"].keys():
@@ -289,7 +293,7 @@ class ENTITY():
                             code="invalid_data"
                         )
                     )
-                ret = _coll.insert_one(self._data)
+                ret = _coll.insert_one(self._data,False,session)
                 ret_data = self._data.copy()
                 ret_data.update({
                     "_id": ret.inserted_id
@@ -383,7 +387,7 @@ class ENTITY():
                         })
                 try:
 
-                    ret = _coll.update_many(self._expr,updater)
+                    ret = _coll.update_many(self._expr,updater,False,None,False,None,session)
                     self._expr = None
                     self._action = None
                     self._data = {}
@@ -402,7 +406,7 @@ class ENTITY():
                     raise ex
 
             if self._action=="delete":
-                ret = _coll.delete_many(self._expr)
+                ret = _coll.delete_many(self._expr,None,session)
                 self._expr = None
                 self._action = None
                 self._data = {}
@@ -525,6 +529,7 @@ class COLL():
 
         self._model=get_model(name)
         self.schema=get_current_schema()
+        self.session = None
        
 
         self.qr=qr
@@ -534,7 +539,18 @@ class COLL():
         :return:
         """
         self._never_use_schema=True
+    def set_session(self,_session):
+        """
+        Join this collection to session
+        :param _session:
+        :return:
+        """
+        # type: (ClientSession) -> COLL
 
+        if not isinstance(_session,ClientSession):
+            raise (Exception("Session must be 'pymongo.client_session.ClientSession'"))
+        self.session=_session
+        return self
     def switch_schema(self,schema_name):
         # type: (str) -> COLL
         """
@@ -583,7 +599,7 @@ class COLL():
         else:
             ret_coll=self.qr.db.get_collection(self.schema+"."+ self._none_schema_name).with_options(codec_options=self.qr._codec_options)
         key_info=get_keys_of_model(self._none_schema_name)
-        if key_info["keys"]!=None  and not _cache_create_key_for_collection.has_key(self.get_collection_name()):
+        if key_info["keys"]!=None  and not dict_utils.has_key(_cache_create_key_for_collection,self.get_collection_name()):
             for item in key_info["keys"]:
                 keys=[]
                 partialFilterExpression={}
@@ -614,7 +630,7 @@ class COLL():
                             _cache_create_key_for_collection.update({
                                 self.get_collection_name(): True
                             })
-                        print ex
+
                         logger.error(ex)
 
         return ret_coll
@@ -715,7 +731,7 @@ class COLL():
         return self._entity
     def aggregate(self):
         """create aggregate before create pipeline"""
-        return AGGREGATE(self,self.qr,self.name)
+        return AGGREGATE(self,self.qr,self.name,self.session)
     def insert(self,*args,**kwargs):
         # type: (dict) -> dict
         # type: (tuple) -> dict
@@ -727,7 +743,7 @@ class COLL():
         """
 
         ac=self.entity().insert_one(*args,**kwargs)
-        ret=ac.commit()
+        ret=ac.commit(self.session)
         return ret
     def update(self,data,filter,*args,**kwargs):
         # type: (dict,str,int) -> dict
@@ -755,7 +771,7 @@ class COLL():
             kwargs=args[0]
         ac=self.entity().filter(filter,kwargs)
         ac.update_many(data)
-        ret=ac.commit()
+        ret=ac.commit(self.session)
         return ret
     def create_unique_index(self,*args,**kwargs):
         """
@@ -809,7 +825,7 @@ class COLL():
                              self.descibe_fields("\t\t\t", self._model.get_fields())))
         ac=self.entity().filter(filter,*args,**kwargs)
         ac.delete()
-        ret=ac.commit()
+        ret=ac.commit(self.session)
         return ret
     def get_filter_keys(self,keys):
         ret=""
@@ -842,7 +858,7 @@ class AGGREGATE():
 
     """
 
-    def __init__(self,coll, qr, name):
+    def __init__(self,coll, qr, name,session = None):
         # type: (COLL,QR,str) -> AGGREGATE
         """
         Create instance of AGGREGATE
@@ -850,6 +866,9 @@ class AGGREGATE():
         :param qr: instance of QR, this param will be use when get data from mongodb
         :param name: collecion name without schema
         """
+        if session != None and not isinstance(session,ClientSession):
+            raise (Exception("session must be 'pymongo.client_session.ClientSession'"))
+        self.session=session
         self._coll=coll
         self._selected_fields = None
         self.qr = qr
@@ -955,6 +974,10 @@ class AGGREGATE():
                         key: expr.get_calc_expr(kwargs[key],params)
                     })
                     _next_step_fields.append(key)
+            else:
+                _project.update({
+                    key: kwargs[key]
+                })
         self._selected_fields=_next_step_fields
         self._pipe.append({
             "$project":_project
@@ -1003,7 +1026,7 @@ class AGGREGATE():
 
             __id="$"+_id
             _next_step_fields.append("_id")
-            _next_step_fields.append("_id."+_id)
+            # _next_step_fields.append("_id."+_id)
 
         _group = {
             "$group": {
@@ -1163,13 +1186,13 @@ class AGGREGATE():
                           foreign_field=foreign_field,
                           alias=alias)
         else:
-            if not kwargs.has_key("source"):
+            if not dict_utils.has_key(kwargs,"source"):
                 raise Exception("'source' was not found")
-            if not kwargs.has_key("local_field"):
+            if not dict_utils.has_key(kwargs,"local_field"):
                 raise Exception("'local_field' was not found")
-            if not kwargs.has_key("foreign_field"):
+            if not dict_utils.has_key(kwargs,"foreign_field"):
                 raise Exception("'foreign_field' was not found")
-            if not kwargs.has_key("alias"):
+            if not dict_utils.has_key(kwargs,"alias"):
                 raise Exception("'alias' was not found")
         source_model=None
         if isinstance(source,COLL):
@@ -1264,16 +1287,25 @@ class AGGREGATE():
         #     return list(self.qr.db.get_collection(self.name).aggregate(self._pipe))
         # coll=self.qr.db.get_collection(self.name).with_options(codec_options=self.qr._codec_options)
         coll = self._coll.get_collection()
-        coll_ret=coll.aggregate(self._pipe)
+        coll_ret=coll.aggregate(self._pipe,self.session)
 
         ret=[]
-        for doc in coll_ret:
-            for key in self.get_selected_fields():
-                if not doc.has_key(key):
-                    doc.update({
-                        key:None
-                    })
-            ret.append(doc)
+        if sys.version_info[0]<=2:
+            for doc in coll_ret:
+                for key in self.get_selected_fields():
+                    if not doc.has_key(key):
+                        doc.update({
+                            key:None
+                        })
+                ret.append(doc)
+        else:
+            for doc in coll_ret:
+                for key in self.get_selected_fields():
+                    if not doc.__contains__(key):
+                        doc.update({
+                            key:None
+                        })
+                ret.append(doc)
 
         # ret=list(coll.aggregate(self._pipe))
         self._pipe=[]
@@ -1289,7 +1321,11 @@ class AGGREGATE():
         :return: dict including: page_size, page_index, total_items, items
         """
         _tmp_pipe = [x for x in self._pipe]
-        _count_pipe=[x for x in self._pipe if self._pipe.index(x)<self._pipe.__len__() and x.keys()[0]!="$sort"]
+        _count_pipe=[]
+        if sys.version_info[0]<=2:
+            _count_pipe=[x for x in self._pipe if self._pipe.index(x)<self._pipe.__len__() and x.keys()[0]!="$sort"]
+        else:
+            _count_pipe = [x for x in self._pipe if self._pipe.index(x) < self._pipe.__len__() and list(x.keys())[0] != "$sort"]
         self._pipe = _count_pipe
         _sel_fields=self._selected_fields
         total_items_agg=self.count("total_items")
@@ -1334,16 +1370,17 @@ def connect(*args,**kwargs):
             args=kwargs
         else:
             args=args[0]
-        if not args.has_key("host"):
+        if not dict_utils.has_key(args,"host"):
             raise (Exception("This look like you forgot set 'host' param.\n Where is your mongodb hosting?"))
-        if not args.has_key("port"):
+        if not dict_utils.has_key(args,"port"):
             raise (Exception("This look like you forgot set 'port' param.\n What is your mongodb port? Is it '27017'"))
-        if not args.has_key("name"):
-            raise (Exception("This look like you forgot set 'name' (The name of database) param.\n Which is your mongodb database?"))
-
-        if args.has_key("user") and args.get("user",None)!=None:
-            if not args.has_key("password") or args.get("password", "") == "":
+        if not dict_utils.has_key(args,"name"):
+            raise (Exception(
+                "This look like you forgot set 'name' (The name of database) param.\n Which is your mongodb database?"))
+        if dict_utils.has_key(args,"user") and args.get("user",None)!=None:
+            if not dict_utils.has_key(args,"password") or args.get("password", "") == "":
                 raise (Exception("This look like you forgot set 'user' and 'password' params.\n How is your mongodb authorization?"))
+
         key="host={0};port={1};user={2};pass={3};name={4}".format(
             args["host"],
             args["port"],
@@ -1353,7 +1390,7 @@ def connect(*args,**kwargs):
             args.get("tz_aware",False),
             args.get("timezone",None)
         )
-        if not _db.has_key(key):
+        if not dict_utils.has_key(_db,key):
             cnn=MongoClient(
                 host=args["host"],
                 port=args["port"]
@@ -1371,9 +1408,13 @@ def connect(*args,**kwargs):
                     tz_aware=False
                 )
 
+            version=db.eval("return db.version()")
+
             _db[key]={
                 "database":db,
-                "codec_options":codec_options
+                "codec_options":codec_options,
+                "version":version,
+                "versions":version.split('.')
             }
         return QR(_db[key])
     except OperationFailure as ex:
@@ -1381,4 +1422,4 @@ def connect(*args,**kwargs):
         raise ex
     except Exception as ex:
         logger.debug(ex)
-        raise ex
+        raise (ex)

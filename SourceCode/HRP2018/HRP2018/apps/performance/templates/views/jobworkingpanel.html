@@ -1,0 +1,66 @@
+﻿<div class="hcs-container" style="height: 100%">
+    <div class="zb-page-sidebar">
+        <div class="zb-right" style="width:100%;">
+            <div class="zb-top">
+            <div class="zb-left-content">
+                    <site-map class="ng-scope">
+                        <span class="ng-binding">{{$root.currentFunction.custom_name}}</span>
+                        <span><i class="bowtie-icon bowtie-chevron-right"></i></span>
+                        <span class="ng-binding">{{currentFunction.custom_name}}</span>
+                    </site-map>
+            </div>
+        </div>
+            <div class="zb-content">
+                <div class="zb-navbar-custom" style="background-color:#ffffff; height:100%">
+                    <nav-tabs min-height="0px" max-height="0px" style="overflow:unset; border-top:unset;">
+                        <tab-content name="tab1" title="{{jobWorkingGroup.custom_name}}" select="redirect.jobWorkingGroupPage">
+                            <!--<div c-template url="${get_app_url('')}/pages/factorappraisal/factorappraisalgroup"
+                                 style="height: 100%;">
+
+                            </div>-->
+                        </tab-content>
+                        <tab-content name="tab2" title="{{jobWorking.custom_name}}" select="redirect.jobWorkingPage">
+                            <!--<div c-template url="${get_app_url('')}/pages/factorappraisal/factorappraisal" 
+                                 style="height: 100%;">
+
+                            </div>-->
+                        </tab-content>
+                    </nav-tabs>
+                    <div c-template url="${get_app_url('')}/pages/{{$partialpage}}" 
+                                 style="height: 100%; padding-top:5px;" ng-if="!display.viewDetail">
+                    </div>
+                    <page-sidebar on-add="$jobWorking.onAdd" 
+                                    on-edit="$jobWorking.onEdit" 
+                                    on-delete="$jobWorking.onDelete" 
+                                    on-save="$jobWorking.onSave" 
+                                    on-import="$jobWorking.onImport" 
+                                    on-export="$jobWorking.onExport"
+                                    on-search-press="$jobWorking.onSearch"
+                                    source="jobWorkingMap" 
+                                    key-field="function_id" 
+                                    display-field="default_name" 
+                                    icon-field="icon" 
+                                    selected-key="$jobWorking.selectedFunction"
+                                    reload-on-change="true" ng-if="display.viewDetail">
+                        <site-map>
+                            <a style="cursor:pointer"><span ng-click="redirect.jobWorkingPage()">back</span></a>
+                            <span><i class="bowtie-icon bowtie-chevron-right"></i></span>
+                            <span>{{currentFunction.default_name}}</span></site-map>
+                        <!--on-search-change="onSearch"-->
+                        <!--<advanced-search>
+                            <input type="text" placeholder="Name" />
+                            <input type="text" placeholder="Age" />
+                        </advanced-search>-->
+                        <content>
+                            <div c-template url="${get_app_url('')}/pages/{{$partialView}}" style="height:100%;"></div>
+                        </content>
+                    </page-sidebar>
+                    </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    <%include file="../scripts/jobworkingpanel.js"/>
+</script>

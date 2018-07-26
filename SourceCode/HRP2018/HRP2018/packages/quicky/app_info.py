@@ -4,6 +4,7 @@ import sys
 import importlib
 from django.conf.urls.static import static
 from django.conf.urls import include,url
+from . import dict_utils
 settings=None
 class app_config():
     """
@@ -37,9 +38,9 @@ class app_config():
 
         if type(config)==tuple and config.__len__()>0:
             config=config[0]
-        if not config.has_key("path"):
+        if not dict_utils.has_key(config,"path"):
             raise(Exception("'path' was not found"))
-        if not config.has_key("host"):
+        if not dict_utils.has_key(config,"host"):
             raise (Exception("'host' was not found"))
         path=config["path"]
 

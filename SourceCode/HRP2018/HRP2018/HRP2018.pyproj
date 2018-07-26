@@ -3,7 +3,7 @@
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <Name>HRP2018</Name>
     <RootNamespace>HRP2018</RootNamespace>
-    <InterpreterId>MSBuild|env|$(MSBuildProjectFullPath)</InterpreterId>
+    <InterpreterId>Global|PythonCore|2.7</InterpreterId>
     <IsWindowsApplication>False</IsWindowsApplication>
     <WebBrowserPort>8888</WebBrowserPort>
     <SccProjectName>SAK</SccProjectName>
@@ -79,10 +79,16 @@
     <Compile Include="apps\lms\api\functionlist.py" />
     <Compile Include="apps\lms\api\HCSSYS_DataDomain.py" />
     <Compile Include="apps\lms\api\HCSSYS_Departments.py" />
+    <Compile Include="apps\lms\api\LMSLS_MaterialFolder.py" />
+    <Compile Include="apps\lms\api\HCSSYS_SystemConfig.py" />
     <Compile Include="apps\lms\api\models\base.py" />
     <Compile Include="apps\lms\api\models\config.py" />
+    <Compile Include="apps\lms\api\models\HCSEM_Employees.py" />
+    <Compile Include="apps\lms\api\models\HCSSYS_ComboboxList.py" />
     <Compile Include="apps\lms\api\models\HCSSYS_DataDomain.py" />
     <Compile Include="apps\lms\api\models\HCSSYS_Departments.py" />
+    <Compile Include="apps\lms\api\models\HCSSYS_SystemConfig.py" />
+    <Compile Include="apps\lms\api\models\LMSLS_MaterialFolder.py" />
     <Compile Include="apps\lms\api\models\SYS_FunctionList.py" />
     <Compile Include="apps\lms\api\models\SYS_ValueList.py" />
     <Compile Include="apps\lms\api\models\__init__.py" />
@@ -108,6 +114,20 @@
     <Compile Include="apps\performance\api\common.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="apps\performance\api\HCSLS_JobWorking.py" />
+    <Compile Include="apps\performance\api\HCSLS_JobWorkingGroup.py" />
+    <Compile Include="apps\performance\api\Query\FactorAppraisalGroup.py" />
+    <Compile Include="apps\performance\api\Query\JobWorking.py" />
+    <Compile Include="apps\performance\api\TMLS_FactorAppraisalGroup.py" />
+    <Compile Include="apps\performance\api\TMLS_FactorAppraisal.py" />
+    <Compile Include="apps\performance\api\models\TMLS_FactorAppraisal.py" />
+    <Compile Include="apps\performance\api\models\TMLS_FactorAppraisalGroup.py" />
+    <Compile Include="apps\performance\api\models\HCSLS_JobWorkingGroup.py" />
+    <Compile Include="apps\performance\api\models\HCSLS_JobWorking.py" />
+    <Compile Include="apps\performance\api\Query\JobWorkingGroup.py" />
+    <Compile Include="apps\performance\api\Query\FactorAppraisal.py" />
+    <Compile Include="apps\performance\api\TMSYS_ConfigChangeObjectPriority.py" />
+    <Compile Include="apps\performance\api\TMLS_Rank.py" />
     <Compile Include="apps\performance\api\HCSLS_Award.py" />
     <Compile Include="apps\performance\api\HCSLS_AwardLevel.py" />
     <Compile Include="apps\performance\api\HCSLS_AwardPlace.py" />
@@ -157,6 +177,9 @@
     <Compile Include="apps\performance\api\models\HCSEM_Employees.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="apps\performance\api\models\TMSYS_ConfigChangeObjectPriority.py" />
+    <Compile Include="apps\performance\api\models\TMLS_RankSub.py" />
+    <Compile Include="apps\performance\api\models\TMLS_Rank.py" />
     <Compile Include="apps\performance\api\models\HCSLS_AwardLevel.py" />
     <Compile Include="apps\performance\api\models\HCSLS_AwardPlace.py" />
     <Compile Include="apps\performance\api\models\HCSLS_Award.py" />
@@ -234,6 +257,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="apps\performance\api\Query\Ethnic.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="apps\performance\api\Query\TMLS_Rank.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="apps\performance\api\Query\TrainCVRG.py" />
@@ -2108,6 +2134,7 @@
     <Compile Include="packages\quicky\applications.py" />
     <Compile Include="packages\quicky\app_info.py" />
     <Compile Include="packages\quicky\authorize.py" />
+    <Compile Include="packages\quicky\backends\__init__.py" />
     <Compile Include="packages\quicky\caller.py" />
     <Compile Include="packages\quicky\extens.py" />
     <Compile Include="packages\quicky\language.py" />
@@ -2383,6 +2410,8 @@
     <Content Include="apps\admin\templates\views\views.html" />
     <Content Include="apps\admin\templates\views\wiki.html" />
     <Content Include="apps\lms\config.json" />
+    <Content Include="apps\lms\static\app\combobox\combobox.directive.js" />
+    <Content Include="apps\lms\static\app\combobox\combobox.html" />
     <Content Include="apps\lms\static\app\components\components.js" />
     <Content Include="apps\lms\static\app\components\input\checkbox\checkbox.directive.js" />
     <Content Include="apps\lms\static\app\components\input\checkbox\checkbox.html" />
@@ -2892,6 +2921,8 @@
     <Content Include="apps\lms\static\media\favicon.ico" />
     <Content Include="apps\lms\static\media\logoSureHCS.png" />
     <Content Include="apps\lms\templates\base.html" />
+    <Content Include="apps\lms\templates\custom\combobox\combobox.directive.js" />
+    <Content Include="apps\lms\templates\custom\combobox\combobox.html" />
     <Content Include="apps\lms\templates\dynamic.html" />
     <Content Include="apps\lms\templates\footer.html" />
     <Content Include="apps\lms\templates\header.html" />
@@ -2901,10 +2932,24 @@
     <Content Include="apps\lms\templates\script.html" />
     <Content Include="apps\lms\templates\scripts\app.js" />
     <Content Include="apps\lms\templates\scripts\home.js" />
+    <Content Include="apps\lms\templates\scripts\partialscript\learning_material_masterial.js" />
+    <Content Include="apps\lms\templates\scripts\partialscript\learning_material_folder.js" />
+    <Content Include="apps\lms\templates\scripts\partialscript\learning_material_dashboard.js" />
+    <Content Include="apps\lms\templates\scripts\partialscript\learning_material_approval.js" />
     <Content Include="apps\lms\templates\scripts\permision.js" />
+    <Content Include="apps\lms\templates\scripts\learning_material.js" />
     <Content Include="apps\lms\templates\scripts\profile.js" />
+    <Content Include="apps\lms\templates\views\commons\dialog_save_close.html" />
+    <Content Include="apps\lms\templates\views\commons\excel_import.html" />
     <Content Include="apps\lms\templates\views\dialog\dialog.html" />
+    <Content Include="apps\lms\templates\views\directives\combobox\template.html" />
+    <Content Include="apps\lms\templates\views\form\addLearningMaterialManagement.html" />
+    <Content Include="apps\lms\templates\views\form\addLearningMaterial.html" />
     <Content Include="apps\lms\templates\views\home.html" />
+    <Content Include="apps\lms\templates\views\partialpage\learning_material_approval.html" />
+    <Content Include="apps\lms\templates\views\partialpage\learning_material_folder.html" />
+    <Content Include="apps\lms\templates\views\partialpage\learning_material_masterial.html" />
+    <Content Include="apps\lms\templates\views\partialpage\learning_material_dashboard.html" />
     <Content Include="apps\lms\templates\views\permision.html" />
     <Content Include="apps\lms\templates\views\permission\domain.html" />
     <Content Include="apps\lms\templates\views\permission\form\addDomain.html" />
@@ -2915,6 +2960,7 @@
     <Content Include="apps\lms\templates\views\permission\scripts\usergroup.js" />
     <Content Include="apps\lms\templates\views\permission\user.html" />
     <Content Include="apps\lms\templates\views\permission\usergroup.html" />
+    <Content Include="apps\lms\templates\views\learning_material.html" />
     <Content Include="apps\lms\templates\views\profile.html" />
     <Content Include="apps\lms\templates\views\profile\formEdit.html" />
     <Content Include="apps\lms\templates\views\profile\formEditTableInfo.html" />
@@ -2924,6 +2970,7 @@
     <Content Include="apps\performance\static\app\components\input\textarea\textarea.directive.js" />
     <Content Include="apps\performance\static\app\components\tree\tree-table\tree-table.directive.js" />
     <Content Include="apps\performance\static\app\components\tree\tree-table\tree-table.html" />
+    <Content Include="apps\performance\static\app\directives\combobox_custom\combobox_custom.directive.js" />
     <Content Include="apps\performance\static\app\directives\combobox\combobox.directive.js" />
     <Content Include="apps\performance\static\app\directives\combobox\combobox.html" />
     <Content Include="apps\performance\static\app\components\input\password\password.directive.js" />
@@ -2933,6 +2980,7 @@
     <Content Include="apps\performance\static\app\components\tree\tree.module.js" />
     <Content Include="apps\performance\static\app\components\tree\tree\tree.directive.js" />
     <Content Include="apps\performance\static\app\components\tree\tree\tree.html" />
+    <Content Include="apps\performance\static\app\directives\combobox_custom\combobox_custom.html" />
     <Content Include="apps\performance\static\app\widgets\collapse-box\collapse-box.directive.js" />
     <Content Include="apps\performance\static\app\widgets\nav-tabs\nav-tabs.directive.js" />
     <Content Include="apps\performance\static\app\widgets\page-sidebar\page-sidebar.directive.js" />
@@ -2954,6 +3002,7 @@
     <Content Include="apps\performance\static\css\site_less\zb_app_tree.less" />
     <Content Include="apps\performance\static\css\site_less\zb_app_tree_table.less" />
     <Content Include="apps\performance\static\css\site_less\zb_widget_collapse_box.less" />
+    <Content Include="apps\performance\static\css\site_less\zb_widget_tab-left.less" />
     <Content Include="apps\performance\static\css\site_less\zb_widget_navtab.less" />
     <Content Include="apps\performance\static\css\site_less\zb_widget_page_sidebar.less" />
     <Content Include="apps\performance\static\font\bowtie\Bowtie.eot" />
@@ -2982,7 +3031,50 @@
     <Content Include="apps\performance\static\font\segoeui\SegoeUI.woff" />
     <Content Include="apps\performance\static\font\segoeui\SegoeUI.woff2" />
     <Content Include="apps\performance\static\lv\file_reading.js" />
+    <Content Include="apps\performance\templates\scripts\jobworkingpanel.js" />
+    <Content Include="apps\performance\templates\scripts\factorappraisal.js" />
+    <Content Include="apps\performance\templates\scripts\rankcategory.js" />
     <Content Include="apps\performance\templates\scripts\category.js" />
+    <Content Include="apps\performance\templates\views\category\form\addJobWorking.html" />
+    <Content Include="apps\performance\templates\views\category\form\addJobWorkingGroup.html" />
+    <Content Include="apps\performance\templates\views\category\jobworkinggroup.html" />
+    <Content Include="apps\performance\templates\views\category\jobworking.html" />
+    <Content Include="apps\performance\templates\views\category\jobworkingpanel.html" />
+    <Content Include="apps\performance\templates\views\category\scripts\jobworkinggroup.js" />
+    <Content Include="apps\performance\templates\views\category\scripts\jobworking.js" />
+    <Content Include="apps\performance\templates\views\category\scripts\jobworkingpanel.js" />
+    <Content Include="apps\performance\templates\views\commons\dialog_save_close.html" />
+    <Content Include="apps\performance\templates\views\jobworkingpanel\jobworking.html" />
+    <Content Include="apps\performance\templates\views\jobworkingpanel\jobworkingdetail.html" />
+    <Content Include="apps\performance\templates\views\jobworkingpanel\jobworkinggroup.html" />
+    <Content Include="apps\performance\templates\views\jobworkingpanel\form\addJobWorking.html" />
+    <Content Include="apps\performance\templates\views\jobworkingpanel\form\addJobWorkingGroup.html" />
+    <Content Include="apps\performance\templates\views\jobworkingpanel\scripts\jobworkingdetail.js" />
+    <Content Include="apps\performance\templates\views\jobworkingpanel\scripts\jobworking.js" />
+    <Content Include="apps\performance\templates\views\jobworkingpanel\scripts\jobworkinggroup.js" />
+    <Content Include="apps\performance\templates\views\jobworkingpanel.html" />
+    <Content Include="apps\performance\templates\views\factorappraisal.html" />
+    <Content Include="apps\performance\templates\views\factorappraisal\factorappraisal.html" />
+    <Content Include="apps\performance\templates\views\factorappraisal\factorappraisalgroup.html" />
+    <Content Include="apps\performance\templates\views\factorappraisal\form\addFactorAppraisal.html" />
+    <Content Include="apps\performance\templates\views\factorappraisal\form\addFactorAppraisalGroup.html" />
+    <Content Include="apps\performance\templates\views\factorappraisal\scripts\factorappraisal.js" />
+    <Content Include="apps\performance\templates\views\factorappraisal\scripts\factorappraisalgroup.js" />
+    <Content Include="apps\performance\templates\views\jobworkingpanel\views\performancestandard.html" />
+    <Content Include="apps\performance\templates\views\jobworkingpanel\views\scripts\certificatestandard.js" />
+    <Content Include="apps\performance\templates\views\jobworkingpanel\views\scripts\evaluationfactor.js" />
+    <Content Include="apps\performance\templates\views\jobworkingpanel\views\scripts\evalutionfile.js" />
+    <Content Include="apps\performance\templates\views\jobworkingpanel\views\scripts\jobspecific.js" />
+    <Content Include="apps\performance\templates\views\jobworkingpanel\views\scripts\performancestandard.js" />
+    <Content Include="apps\performance\templates\views\jobworkingpanel\views\scripts\trainingstandard.js" />
+    <Content Include="apps\performance\templates\views\jobworkingpanel\views\trainingstandard.html" />
+    <Content Include="apps\performance\templates\views\jobworkingpanel\views\certificatestandard.html" />
+    <Content Include="apps\performance\templates\views\jobworkingpanel\views\evaluationfactor.html" />
+    <Content Include="apps\performance\templates\views\jobworkingpanel\views\evalutionfile.html" />
+    <Content Include="apps\performance\templates\views\jobworkingpanel\views\jobspecific.html" />
+    <Content Include="apps\performance\templates\views\jobworkingpanel\views\jobdescription.html" />
+    <Content Include="apps\performance\templates\views\jobworkingpanel\views\scripts\jobdescription.js" />
+    <Content Include="apps\performance\templates\views\rankcategory.html" />
     <Content Include="apps\performance\templates\views\category\awardplace.html" />
     <Content Include="apps\performance\templates\views\category\awardlevel.html" />
     <Content Include="apps\performance\templates\views\category\awardtabpanel.html" />
@@ -3697,6 +3789,12 @@
     <Content Include="apps\performance\templates\views\profile\scripts\knowledge.js" />
     <Content Include="apps\performance\templates\views\profile\scripts\commoninfo.js" />
     <Content Include="apps\performance\templates\views\category\region.html" />
+    <Content Include="apps\performance\templates\views\rankcategory\department.html" />
+    <Content Include="apps\performance\templates\views\rankcategory\form\addPersonal.html" />
+    <Content Include="apps\performance\templates\views\rankcategory\form\dialog\addPersonal\addDetail.html" />
+    <Content Include="apps\performance\templates\views\rankcategory\personal.html" />
+    <Content Include="apps\performance\templates\views\rankcategory\scripts\department.js" />
+    <Content Include="apps\performance\templates\views\rankcategory\scripts\personal.js" />
     <Content Include="apps\performance\templates\views\systemconfig.html" />
     <Content Include="apps\performance\templates\views\systemconfig\scripts\account.js" />
     <Content Include="apps\performance\templates\views\systemconfig\system.html" />
@@ -6328,6 +6426,7 @@
     <Folder Include="apps\lms\excel\" />
     <Folder Include="apps\lms\static\" />
     <Folder Include="apps\lms\static\app\" />
+    <Folder Include="apps\lms\static\app\combobox\" />
     <Folder Include="apps\lms\static\app\components\" />
     <Folder Include="apps\lms\static\app\components\input\" />
     <Folder Include="apps\lms\static\app\components\input\checkbox\" />
@@ -6472,9 +6571,17 @@
     <Folder Include="apps\lms\static\lv\" />
     <Folder Include="apps\lms\static\media\" />
     <Folder Include="apps\lms\templates\" />
+    <Folder Include="apps\lms\templates\custom\" />
+    <Folder Include="apps\lms\templates\custom\combobox\" />
     <Folder Include="apps\lms\templates\scripts\" />
+    <Folder Include="apps\lms\templates\scripts\partialscript\" />
     <Folder Include="apps\lms\templates\views\" />
+    <Folder Include="apps\lms\templates\views\commons\" />
     <Folder Include="apps\lms\templates\views\dialog\" />
+    <Folder Include="apps\lms\templates\views\directives\" />
+    <Folder Include="apps\lms\templates\views\directives\combobox\" />
+    <Folder Include="apps\lms\templates\views\form\" />
+    <Folder Include="apps\lms\templates\views\partialpage\" />
     <Folder Include="apps\lms\templates\views\permission\" />
     <Folder Include="apps\lms\templates\views\permission\form\" />
     <Folder Include="apps\lms\templates\views\permission\scripts\" />
@@ -6492,6 +6599,7 @@
     <Folder Include="apps\performance\static\app\components\input\textarea\" />
     <Folder Include="apps\performance\static\app\components\tree\tree-table\" />
     <Folder Include="apps\performance\static\app\directives\combobox\" />
+    <Folder Include="apps\performance\static\app\directives\combobox_custom\" />
     <Folder Include="apps\performance\static\app\widgets\nav-tabs\" />
     <Folder Include="apps\performance\static\app\widgets\page-sidebar\" />
     <Folder Include="apps\performance\static\css\images\login\" />
@@ -6517,6 +6625,19 @@
     <Folder Include="apps\performance\templates\views\exceltemplate\form\" />
     <Folder Include="apps\performance\templates\views\exceltemplate\scripts\" />
     <Folder Include="apps\performance\templates\views\category\" />
+    <Folder Include="apps\performance\templates\views\jobworkingpanel\" />
+    <Folder Include="apps\performance\templates\views\jobworkingpanel\form\" />
+    <Folder Include="apps\performance\templates\views\jobworkingpanel\views\" />
+    <Folder Include="apps\performance\templates\views\jobworkingpanel\scripts\" />
+    <Folder Include="apps\performance\templates\views\jobworkingpanel\views\form\" />
+    <Folder Include="apps\performance\templates\views\jobworkingpanel\views\scripts\" />
+    <Folder Include="apps\performance\templates\views\jobworkingpanel\" />
+    <Folder Include="apps\performance\templates\views\jobworkingpanel\form\" />
+    <Folder Include="apps\performance\templates\views\jobworkingpanel\scripts\" />
+    <Folder Include="apps\performance\templates\views\factorappraisal\" />
+    <Folder Include="apps\performance\templates\views\factorappraisal\form\" />
+    <Folder Include="apps\performance\templates\views\factorappraisal\scripts\" />
+    <Folder Include="apps\performance\templates\views\rankcategory\" />
     <Folder Include="apps\performance\templates\views\profile\form\" />
     <Folder Include="apps\performance\templates\views\profile\scripts\" />
     <Folder Include="apps\performance\templates\views\permission\form\dialog\" />
@@ -6532,6 +6653,10 @@
     <Folder Include="apps\performance\static\assets\summer-note\" />
     <Folder Include="apps\performance\static\assets\summer-note\css\" />
     <Folder Include="apps\performance\static\assets\summer-note\font\" />
+    <Folder Include="apps\performance\templates\views\rankcategory\form\" />
+    <Folder Include="apps\performance\templates\views\rankcategory\form\dialog\" />
+    <Folder Include="apps\performance\templates\views\rankcategory\form\dialog\addPersonal\" />
+    <Folder Include="apps\performance\templates\views\rankcategory\scripts\" />
     <Folder Include="apps\performance\templates\views\systemconfig\" />
     <Folder Include="apps\performance\templates\views\permission\form\" />
     <Folder Include="apps\performance\api\models\" />
@@ -6737,6 +6862,7 @@
     <Folder Include="configs\" />
     <Folder Include="logs\" />
     <Folder Include="models\" />
+    <Folder Include="packages\quicky\backends\" />
     <Folder Include="script_update\" />
     <Folder Include="packages\" />
     <Folder Include="packages\authorization\" />

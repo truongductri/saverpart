@@ -22,8 +22,7 @@ def display_list_employee_type():
         display_true_type="switch(case(values.custom!='',values.custom),values.caption)"
         )
     ret.sort(dict(
-        ordinal = 1,
-        rate_soft_sal = 1
+        ordinal = 1
         ))
 
     return ret

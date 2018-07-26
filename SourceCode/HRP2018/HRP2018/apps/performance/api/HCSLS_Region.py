@@ -19,7 +19,10 @@ def get_list_with_searchtext(args):
     ret=Region.display_list_region()
     
     if(searchText != None):
-        ret.match("contains(region_name, @name)",name=searchText)
+        ret.match("contains(region_name, @name) or " + \
+            "contains(region_code, @name) or " + \
+            "contains(note, @name) or " + \
+            "contains(ordinal, @name)",name=searchText.strip())
 
     if(sort != None):
         ret.sort(sort)
@@ -52,11 +55,11 @@ def update(args):
             data =  set_dict_update_data(args)
             ret  =  models.HCSLS_Region().update(
                 data, 
-                "_id == {0}", 
-                ObjectId(args['data']['_id']))
+                "region_code == {0}", 
+                args['data']['region_code'])
             if ret['data'].raw_result['updatedExisting'] == True:
                 ret.update(
-                    item = Region.display_list_region().match("_id == {0}", ObjectId(args['data']['_id'])).get_item()
+                    item = Region.display_list_region().match("region_code == {0}", args['data']['region_code']).get_item()
                     )
             lock.release()
             return ret
@@ -74,7 +77,7 @@ def delete(args):
         lock.acquire()
         ret = {}
         if args['data'] != None:
-            ret  =  models.HCSLS_Region().delete("_id in {0}",[ObjectId(x["_id"])for x in args['data']])
+            ret  =  models.HCSLS_Region().delete("region_code in {0}",[x["region_code"]for x in args['data']])
             lock.release()
             return ret
 

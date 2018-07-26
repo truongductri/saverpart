@@ -10,6 +10,7 @@
         { "data": "is_key", "title": "${ get_res('is_key_table_header', 'Khóa chính') }" },
         { "data": "allow_null", "title": "${ get_res('allow_null_table_header', 'Không được để trống') }" },
     ];
+    scope.title = scope.$parent.headerTitle;
     scope.tableListUserSource = _loadDataListUserServerSide;
     scope.refreshDataListUserRow = function () { /*Do nothing*/ };
     scope.selectedListUserItems = [];
@@ -160,6 +161,7 @@
     };
 
     function addDetail() {
+        debugger
         openDialog("${ get_res('reference_information', 'Thông tin tra cứu') }", "exceltemplate/form/addDetail", function () { }, "addDetailTemplate");
     }
 

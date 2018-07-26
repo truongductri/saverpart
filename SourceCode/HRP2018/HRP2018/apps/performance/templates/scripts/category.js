@@ -5,8 +5,12 @@
     scope.filterFunctionModel = ''
     scope.currentFunction = '';
     scope.mapName = [];
-    scope.main_nation_code = null;
-    scope.main_region_code = null;
+
+    scope.advancedSearch = {
+        main_region_code: null,
+        main_nation_code: null
+    }
+
     /*                                                         */
     /* ==================== Property Scope - END ==============*/
     /*                                                         */

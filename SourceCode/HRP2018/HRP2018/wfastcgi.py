@@ -32,6 +32,9 @@ from xml.dom import minidom
 REPO_PATH=os.path.dirname(os.path.realpath(__file__))
 sys.path.append(REPO_PATH +os.sep+"apps")
 sys.path.append(REPO_PATH+os.sep+"packages")
+#upgrade to pymongo support transaction
+sys.path.append(REPO_PATH+os.sep+"packages/mongo")
+sys.path.append(REPO_PATH+os.sep+"packages/mongo/pymongo")
 sys.path.append(REPO_PATH+os.sep+"packages/django")
 try:
     from cStringIO import StringIO

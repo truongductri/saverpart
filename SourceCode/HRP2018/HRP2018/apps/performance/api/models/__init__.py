@@ -8,7 +8,6 @@ db_context=database.connect(app.settings.Database)
 from SYS_FunctionList import SYS_FunctionList
 from HCSSYS_DataDomain import HCSSYS_DataDomain
 from HCSSYS_Departments import HCSSYS_Departments
-from HCSLS_EmployeeType import HCSLS_EmployeeType
 from SYS_ValueList import SYS_ValueList
 from HCSSYS_SystemConfig import HCSSYS_SystemConfig
 from auth_user import auth_user
@@ -18,6 +17,7 @@ from HCSSYS_ComboboxList import HCSSYS_ComboboxList
 from HCSLANG_CollectionInfo import HCSLANG_CollectionInfo
 from HCSSYS_CollectionInfo import HCSSYS_CollectionInfo
 from HCSSYS_ExcelTemplate import HCSSYS_ExcelTemplate
+from HCSLS_EmployeeType import HCSLS_EmployeeType
 from HCSLS_Nation import HCSLS_Nation
 from HCSLS_Region import HCSLS_Region
 from HCSLS_Ethnic import HCSLS_Ethnic
@@ -43,4 +43,10 @@ from HCSLS_Ward import HCSLS_Ward
 from HCSLS_Hamlet import HCSLS_Hamlet
 from HCSLS_Discipline import HCSLS_Discipline
 from HCSEM_Employees import HCSEM_Employees
+from HCSLS_JobWorkingGroup import HCSLS_JobWorkingGroup
+from HCSLS_JobWorking import HCSLS_JobWorking
+from TMLS_Rank import TMLS_Rank
+from TMSYS_ConfigChangeObjectPriority import TMSYS_ConfigChangeObjectPriority
+from TMLS_FactorAppraisal import TMLS_FactorAppraisal
+from TMLS_FactorAppraisalGroup import TMLS_FactorAppraisalGroup
 from tmp_transactions import tmp_transactions

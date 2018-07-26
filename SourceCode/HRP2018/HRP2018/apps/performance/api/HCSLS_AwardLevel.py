@@ -19,7 +19,10 @@ def get_list_with_searchtext(args):
     ret=Award.get_award_level()
     
     if(searchText != None):
-        ret.match("contains(award_level_name, @name)",name=searchText)
+        ret.match("contains(award_level_name, @name) or " + \
+            "contains(award_level_code, @name) or " + \
+            "contains(max_times_per_year, @name) or " + \
+            "contains(ordinal, @name)",name=searchText.strip())
 
     if(sort != None):
         ret.sort(sort)
@@ -52,11 +55,11 @@ def update(args):
             data =  set_dict_update_data(args)
             ret  =  models.HCSLS_AwardLevel().update(
                 data, 
-                "_id == {0}", 
-                ObjectId(args['data']['_id']))
+                "award_level_code == {0}", 
+                args['data']['award_level_code'])
             if ret['data'].raw_result['updatedExisting'] == True:
                 ret.update(
-                    item = Award.get_award_level().match("_id == {0}", ObjectId(args['data']['_id'])).get_item()
+                    item = Award.get_award_level().match("award_level_code == {0}", args['data']['award_level_code']).get_item()
                     )
             lock.release()
             return ret
@@ -74,7 +77,7 @@ def delete(args):
         lock.acquire()
         ret = {}
         if args['data'] != None:
-            ret  =  models.HCSLS_AwardLevel().delete("_id in {0}",[ObjectId(x["_id"])for x in args['data']])
+            ret  =  models.HCSLS_AwardLevel().delete("award_level_code in {0}",[x["award_level_code"]for x in args['data']])
             lock.release()
             return ret
 

@@ -1,6 +1,7 @@
 import threading
 import datetime
 global lock
+from .. import dict_utils
 lock=threading.Lock()
 global _model_cache_
 _model_cache_={
@@ -14,7 +15,7 @@ def get_value_by_path(path,data):
     :param data:
     :return:
     """
-    if data.has_key(path):
+    if dict_utils.has_key(data,path):
         return data[path]
     items=path.split(".")
     if items.__len__()==1:
@@ -24,6 +25,8 @@ def get_value_by_path(path,data):
         for x in items:
             if val==None:
                 return None
+            elif type(val) is list:
+                return val
             else:
                 val=val.get(x,None)
         return val
@@ -66,7 +69,7 @@ def set_require_fields(name,*args,**kwargs):
     :return:
     """
 
-    if _model_cache_["require_fields"].has_key(name):
+    if dict_utils.has_key(_model_cache_["require_fields"],name):
         pass
     else:
         lock.acquire()
@@ -93,7 +96,7 @@ def create_model(name,*args,**kwargs):
     params=kwargs
     if type(args) is tuple and args.__len__()>0:
         params=args[0]
-    if not _model_cache_["type_fields"].has_key(name):
+    if not dict_utils.has_key(_model_cache_["type_fields"],name):
         lock.acquire()
         try:
             _model_cache_["type_fields"].update({

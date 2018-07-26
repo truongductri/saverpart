@@ -6,7 +6,8 @@ import sys
 import posixpath
 from django.conf.urls.static import static
 from django.conf.urls import include, patterns, url
-from app_info import app_config
+from . app_info import app_config
+from . import dict_utils
 import logging
 
 logger=logging.getLogger(__name__)
@@ -77,8 +78,15 @@ def build_urls(module_name,*args,**kwargs):
                 app_dicts.update({
                     x["host"]:x
                 })
-            list_of_apps_with_persistent_schema=[x for x in args[0] if x.has_key("schema")]
-            list_of_apps_with_public = [x for x in args[0] if x.get("host",None)== "" or x.get("host",None) == "default" or x.get("host",None) == None]
+            list_of_apps_with_persistent_schema=[x for x in args[0]
+                                                 if dict_utils.has_key(x,"schema") and
+                                                 x.get("host", "")!= ""
+                                                 ]
+            list_of_apps_with_public = [x for x in args[0] if (x.get("host",None)== ""
+                                                               or x.get("host",None) == "default"
+                                                               or x.get("host",None) == None)
+
+                                        ]
             # list_of_remain_apps=[x for x in args[0] if list_of_apps_with_persistent_schema.count(x) ==0 and list_of_apps_with_public.count(x) == 0]
 
             list_of_key_of_apps_with_persistent_schema=[x.get("host") for x in list_of_apps_with_persistent_schema]
@@ -107,11 +115,11 @@ def build_urls(module_name,*args,**kwargs):
 
             for app in list_of_apps:
                 ret = applications.load_app(app)
-                if app.has_key("schema"):
+                if dict_utils.has_key(app,"schema"):
                     setattr(ret.settings,"DEFAULT_DB_SCHEMA",app.get("schema"))
-                if app.has_key("login"):
+                if dict_utils.has_key(app,"login"):
                     setattr(ret.settings, "login_url", app.get("login"))
-                if app.has_key("authenticate"):
+                if dict_utils.has_key(app,"authenticate"):
                     try:
                         _authenticate= importlib.import_module(app.get("authenticate"))
                         if not callable(_authenticate):
@@ -123,7 +131,7 @@ def build_urls(module_name,*args,**kwargs):
 
                 url_items=importlib.import_module(ret.mdl.__name__ + ".urls").urlpatterns
 
-                static_urls=[x for x in url_items if x.default_args.has_key("document_root") ]
+                static_urls=[x for x in url_items if dict_utils.has_key(x.default_args,"document_root") ]
                 if ret.host_dir == "":
                     root_doc = static_urls[0].default_args["document_root"]
                     reg_ex = static_urls[0].regex.pattern
@@ -165,7 +173,7 @@ def build_urls(module_name,*args,**kwargs):
                 url_items=importlib.import_module(ret.mdl.__name__ + ".urls").urlpatterns
                 for url_item in url_items:
                     if hasattr(url_item,"default_args"):
-                        if not url_item.default_args.has_key("document_root"):
+                        if not dict_utils.has_key(url_item.default_args,"document_root"):
                             if ret.host_dir == "":
 
                                 default_urls.append(url_item)
