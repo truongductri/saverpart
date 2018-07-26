@@ -1,0 +1,1 @@
+{"options":{},"indexes":[{"v":2,"key":{"_id":1},"name":"_id_","ns":"lv01_lms.lv.HCSLS_Certificate"},{"v":2,"unique":true,"key":{"cer_code":1},"name":"cer_code_1","ns":"lv01_lms.lv.HCSLS_Certificate"}],"uuid":"856c3b16646a4326ba2ad8324ba63b29"}

@@ -1,0 +1,1 @@
+{"options":{},"indexes":[{"v":2,"key":{"_id":1},"name":"_id_","ns":"lv01_lms.fs.chunks"},{"v":2,"unique":true,"key":{"files_id":1,"n":1},"name":"files_id_1_n_1","ns":"lv01_lms.fs.chunks"}],"uuid":"d9d37bcd86f146af99d3a141c03393be"}

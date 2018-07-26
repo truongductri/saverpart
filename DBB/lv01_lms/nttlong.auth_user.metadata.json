@@ -1,0 +1,1 @@
+{"options":{},"indexes":[{"v":2,"key":{"_id":1},"name":"_id_","ns":"lv01_lms.nttlong.auth_user"},{"v":2,"unique":true,"key":{"username":1},"name":"username_1","ns":"lv01_lms.nttlong.auth_user"}],"uuid":"15c35f53eda34c36b2cf4f134dd12ace"}

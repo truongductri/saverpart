@@ -1,0 +1,1 @@
+{"options":{"viewOn":"lv.SYS_ValueList","pipeline":[{"$unwind":{"path":"$values","preserveNullAndEmptyArrays":true}}]},"indexes":[]}

@@ -1,0 +1,1 @@
+{"options":{},"indexes":[{"v":2,"key":{"_id":1},"name":"_id_","ns":"lv01_lms.lv.HCSLS_Hamlet"},{"v":2,"unique":true,"key":{"hamlet_code":1},"name":"hamlet_code_1","ns":"lv01_lms.lv.HCSLS_Hamlet"}],"uuid":"c26f21ec090147e496978f94cd79fcef"}

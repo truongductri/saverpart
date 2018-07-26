@@ -1,0 +1,1 @@
+{"options":{},"indexes":[{"v":2,"key":{"_id":1},"name":"_id_","ns":"lv01_lms.lv.SYS_ValueList"},{"v":2,"key":{"language":1,"list_name":1},"name":"language_list_name_1","ns":"lv01_lms.lv.SYS_ValueList"}],"uuid":"d26ff0efcc654d5393792801ff80acab"}
